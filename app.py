@@ -180,7 +180,8 @@ def api_audiences():
     """API endpoint for audience information"""
     try:
         audiences_data = {}
-        for audience_key in targeting.list_audiences():
+        for audience_info in targeting.list_audiences():
+            audience_key = audience_info['key']  # Extract the key from the dict
             profile = targeting.get_profile(audience_key)
             audiences_data[audience_key] = {
                 'name': profile['name'],
