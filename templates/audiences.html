@@ -125,8 +125,8 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="genalpha-tab" data-bs-toggle="tab" data-bs-target="#genalpha-content" type="button" role="tab">
-                            <i class="fas fa-rocket me-2"></i>Gen Alpha
+                        <button class="nav-link" id="genz-tab" data-bs-toggle="tab" data-bs-target="#genz-content" type="button" role="tab">
+                            <i class="fas fa-mobile me-2"></i>Gen Z
                         </button>
                     </li>
                 </ul>
@@ -143,7 +143,7 @@
                     <div class="tab-pane fade show active" id="millennials-content" role="tabpanel"></div>
                     <div class="tab-pane fade" id="genx-content" role="tabpanel"></div>
                     <div class="tab-pane fade" id="boomers-content" role="tabpanel"></div>
-                    <div class="tab-pane fade" id="genalpha-content" role="tabpanel"></div>
+                    <div class="tab-pane fade" id="genz-content" role="tabpanel"></div>
                 </div>
             </div>
         </div>
@@ -188,10 +188,10 @@ function populateAudienceContent() {
     
     Object.keys(audienceData).forEach(audienceKey => {
         const audience = audienceData[audienceKey];
-        // Handle generation_alpha -> genalpha mapping
+        // Handle audience key to ID mapping
         let targetId = audienceKey.replace('_', '');
-        if (audienceKey === 'generation_alpha') {
-            targetId = 'genalpha';
+        if (audienceKey === 'gen_z') {
+            targetId = 'genz';
         }
         const contentElement = document.getElementById(`${targetId}-content`);
         
