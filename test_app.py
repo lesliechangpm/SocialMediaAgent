@@ -63,17 +63,17 @@ def api_generate():
         platform = data.get('platform', 'instagram')
         
         content_templates = {
-            'millennials': f"Current mortgage rates are {MOCK_RATES['current_rate']}%! Great opportunity for first-time buyers to secure competitive rates. Contact {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'our company')} for personalized guidance! #MortgageRates #FirstTimeBuyer #RealEstate",
-            'gen_x': f"Refinancing opportunity alert! Rates at {MOCK_RATES['current_rate']}% could help you lower your monthly payments and access home equity. Strategic planning for your family's financial future starts here. Contact {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'our company')} today. #Refinancing #HomeEquity #WealthBuilding",
-            'baby_boomers': f"Current mortgage rates: {MOCK_RATES['current_rate']}%. For those considering downsizing or exploring reverse mortgage options, now is an excellent time to review your options with a trusted professional. {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'our company')} provides personalized guidance for your retirement planning. #RetirementPlanning #TrustedAdvisor",
-            'generation_alpha': f"Future homebuyers, take note! Today's rates at {MOCK_RATES['current_rate']}% show the importance of financial literacy and early planning. Smart homes, sustainable materials, and tech-integrated buying processes will shape tomorrow's real estate market. Start learning about homeownership with {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'our company')}! #FutureHomebuyers #FinancialEducation #SmartHomes #SustainableLiving #TechInRealEstate"
+            'millennials': f"🏠 Current mortgage rates are {MOCK_RATES['current_rate']}%! Great opportunity for first-time buyers to secure competitive rates with CMG Mortgage's innovative solutions. Contact {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'CMG Mortgage')} for personalized guidance! #CMGMortgage #MortgageRates #FirstTimeBuyer #RealEstate",
+            'gen_x': f"💼 Refinancing opportunity alert! Rates at {MOCK_RATES['current_rate']}% could help you lower your monthly payments and access home equity with CMG Mortgage's strategic solutions. Strategic planning for your family's financial future starts here. Contact {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'CMG Mortgage')} today. #CMGMortgage #Refinancing #HomeEquity #WealthBuilding",
+            'baby_boomers': f"🏡 Current mortgage rates: {MOCK_RATES['current_rate']}%. For those considering downsizing or exploring reverse mortgage options, CMG Mortgage provides trusted guidance. {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'CMG Mortgage')} offers personalized support for your retirement planning needs. #CMGMortgage #RetirementPlanning #TrustedAdvisor #ReverseReverse",
+            'generation_alpha': f"🚀 Future homebuyers, take note! Today's rates at {MOCK_RATES['current_rate']}% demonstrate the importance of financial literacy and early planning. Smart homes, sustainable materials, and tech-integrated buying processes will shape tomorrow's real estate market with CMG Mortgage's innovation. Start your homeownership education journey with {data.get('loan_officer', 'your loan officer')} at {data.get('company', 'CMG Mortgage')}! #CMGMortgage #FutureHomebuyers #FinancialEducation #SmartHomes #SustainableLiving"
         }
         
         visual_concepts = {
-            'millennials': 'Modern apartment with rate comparison chart',
-            'gen_x': 'Family home with equity growth visualization',
-            'baby_boomers': 'Professional consultation setting with rate documents',
-            'generation_alpha': 'Smart home technology with sustainability features and AR rate display'
+            'millennials': 'Modern apartment with CMG Green and Teal Blue rate charts, clean minimalist design',
+            'gen_x': 'Family home exterior with CMG Aqua Blue equity growth arrows and professional styling',
+            'baby_boomers': 'Professional CMG office consultation with branded materials and warm lighting',
+            'generation_alpha': 'Futuristic smart home with CMG brand colors, sustainability icons, and AR rate overlay'
         }
         
         engagement_strategies = {

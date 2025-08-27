@@ -1,14 +1,21 @@
 /* Social Media Agent - Custom Styles */
 
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --success-color: #28a745;
-    --info-color: #17a2b8;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --dark-color: #343a40;
-    --light-color: #f8f9fa;
+    /* CMG Corporate Brand Colors */
+    --cmg-green: #92C13B;
+    --aqua-blue: #32A4AC;
+    --teal-blue: #138890;
+    --cmg-gray: #4D4D4D;
+    
+    /* Mapped to Bootstrap variables for consistency */
+    --primary-color: #92C13B;    /* CMG Green */
+    --secondary-color: #4D4D4D;  /* CMG Gray */
+    --success-color: #32A4AC;    /* Aqua Blue */
+    --info-color: #138890;       /* Teal Blue */
+    --warning-color: #92C13B;    /* CMG Green for highlights */
+    --danger-color: #dc3545;     /* Keep original red for errors */
+    --dark-color: #4D4D4D;       /* CMG Gray */
+    --light-color: #f8f9fa;      /* Keep light background */
 }
 
 /* Global Styles */
@@ -20,6 +27,40 @@ body {
 .navbar-brand {
     font-weight: 600;
     font-size: 1.25rem;
+    color: var(--cmg-green) !important;
+}
+
+/* CMG Brand Highlights */
+.cmg-primary {
+    color: var(--cmg-green) !important;
+}
+
+.cmg-secondary {
+    color: var(--cmg-gray) !important;
+}
+
+.cmg-aqua {
+    color: var(--aqua-blue) !important;
+}
+
+.cmg-teal {
+    color: var(--teal-blue) !important;
+}
+
+.bg-cmg-green {
+    background-color: var(--cmg-green) !important;
+}
+
+.bg-cmg-aqua {
+    background-color: var(--aqua-blue) !important;
+}
+
+.bg-cmg-teal {
+    background-color: var(--teal-blue) !important;
+}
+
+.bg-cmg-gray {
+    background-color: var(--cmg-gray) !important;
 }
 
 /* Card Enhancements */
@@ -119,19 +160,19 @@ body {
 }
 
 .audience-card.millennials {
-    border-left-color: var(--primary-color);
+    border-left-color: var(--cmg-green);
 }
 
 .audience-card.gen-x {
-    border-left-color: var(--info-color);
+    border-left-color: var(--teal-blue);
 }
 
 .audience-card.baby-boomers {
-    border-left-color: var(--success-color);
+    border-left-color: var(--aqua-blue);
 }
 
 .audience-card.generation-alpha {
-    border-left-color: var(--warning-color);
+    border-left-color: var(--cmg-gray);
 }
 
 /* Platform Icons */
