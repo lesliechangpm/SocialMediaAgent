@@ -1,0 +1,549 @@
+/* UX/UI Improvements - Enhanced Layout, Typography, and Mobile Responsiveness */
+
+/* =============================================================================
+   IMPROVED TYPOGRAPHY SYSTEM
+   ============================================================================= */
+
+/* Enhanced Font Hierarchy */
+:root {
+    /* Improved Typography Scale */
+    --font-size-xs: 0.75rem;      /* 12px */
+    --font-size-sm: 0.875rem;     /* 14px */
+    --font-size-base: 1rem;       /* 16px */
+    --font-size-lg: 1.125rem;     /* 18px */
+    --font-size-xl: 1.25rem;      /* 20px */
+    --font-size-2xl: 1.5rem;      /* 24px */
+    --font-size-3xl: 1.875rem;    /* 30px */
+    --font-size-4xl: 2.25rem;     /* 36px */
+    --font-size-5xl: 3rem;        /* 48px */
+    
+    /* Improved Line Heights */
+    --line-height-tight: 1.25;
+    --line-height-base: 1.5;
+    --line-height-relaxed: 1.625;
+    --line-height-loose: 2;
+    
+    /* Enhanced Spacing System */
+    --spacing-1: 0.25rem;   /* 4px */
+    --spacing-2: 0.5rem;    /* 8px */
+    --spacing-3: 0.75rem;   /* 12px */
+    --spacing-4: 1rem;      /* 16px */
+    --spacing-5: 1.25rem;   /* 20px */
+    --spacing-6: 1.5rem;    /* 24px */
+    --spacing-8: 2rem;      /* 32px */
+    --spacing-10: 2.5rem;   /* 40px */
+    --spacing-12: 3rem;     /* 48px */
+    --spacing-16: 4rem;     /* 64px */
+    --spacing-20: 5rem;     /* 80px */
+    
+    /* Enhanced Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Border Radius System */
+    --radius-sm: 0.125rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
+    --radius-full: 9999px;
+}
+
+/* Improved Body Typography */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    font-weight: 400;
+    color: #374151;
+    background-color: #f9fafb;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced Heading System */
+h1, .h1 { 
+    font-size: var(--font-size-3xl); 
+    font-weight: 700; 
+    line-height: var(--line-height-tight); 
+    color: #111827;
+    margin-bottom: var(--spacing-6);
+    letter-spacing: -0.025em;
+}
+
+h2, .h2 { 
+    font-size: var(--font-size-2xl); 
+    font-weight: 600; 
+    line-height: var(--line-height-tight); 
+    color: #111827;
+    margin-bottom: var(--spacing-5);
+    letter-spacing: -0.025em;
+}
+
+h3, .h3 { 
+    font-size: var(--font-size-xl); 
+    font-weight: 600; 
+    line-height: var(--line-height-base); 
+    color: #111827;
+    margin-bottom: var(--spacing-4);
+}
+
+h4, .h4 { 
+    font-size: var(--font-size-lg); 
+    font-weight: 600; 
+    line-height: var(--line-height-base); 
+    color: #374151;
+    margin-bottom: var(--spacing-3);
+}
+
+h5, .h5 { 
+    font-size: var(--font-size-base); 
+    font-weight: 600; 
+    line-height: var(--line-height-base); 
+    color: #374151;
+    margin-bottom: var(--spacing-3);
+}
+
+h6, .h6 { 
+    font-size: var(--font-size-sm); 
+    font-weight: 600; 
+    line-height: var(--line-height-base); 
+    color: #6b7280;
+    margin-bottom: var(--spacing-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* =============================================================================
+   IMPROVED SPACING AND LAYOUT
+   ============================================================================= */
+
+/* Enhanced Container System */
+.container-fluid {
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+}
+
+.container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+}
+
+/* Enhanced Section Spacing */
+.section-padding {
+    padding-top: var(--spacing-16);
+    padding-bottom: var(--spacing-16);
+}
+
+.section-padding-sm {
+    padding-top: var(--spacing-12);
+    padding-bottom: var(--spacing-12);
+}
+
+.section-padding-lg {
+    padding-top: var(--spacing-20);
+    padding-bottom: var(--spacing-20);
+}
+
+/* Improved Card System */
+.card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+    border-color: #d1d5db;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e2e8f0;
+    padding: var(--spacing-5) var(--spacing-6);
+    font-weight: 600;
+    color: #334155;
+}
+
+.card-body {
+    padding: var(--spacing-6);
+}
+
+.card-footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: var(--spacing-4) var(--spacing-6);
+}
+
+/* =============================================================================
+   ENHANCED NAVIGATION
+   ============================================================================= */
+
+.navbar {
+    background: var(--cmg-green) !important;
+    box-shadow: var(--shadow-md);
+    border-bottom: 3px solid var(--teal-blue);
+    padding-top: var(--spacing-4);
+    padding-bottom: var(--spacing-4);
+}
+
+.navbar-brand {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: white !important;
+    letter-spacing: -0.025em;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    padding: var(--spacing-2) var(--spacing-4);
+    margin: 0 var(--spacing-1);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease-in-out;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navbar-nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white !important;
+    transform: translateY(-1px);
+}
+
+.navbar-nav .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white !important;
+}
+
+/* =============================================================================
+   IMPROVED BUTTONS
+   ============================================================================= */
+
+.btn {
+    font-weight: 500;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-3) var(--spacing-5);
+    border-radius: var(--radius-md);
+    border: none;
+    transition: all 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn:active {
+    transform: translateY(0);
+    transition-duration: 0.05s;
+}
+
+.btn-sm {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--font-size-xs);
+}
+
+.btn-lg {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--cmg-green), var(--teal-blue));
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #7da32e, #0f6b73);
+    color: white;
+}
+
+/* =============================================================================
+   RESPONSIVE DESIGN IMPROVEMENTS
+   ============================================================================= */
+
+/* Mobile-First Approach */
+@media (max-width: 575.98px) {
+    :root {
+        --font-size-3xl: 1.5rem;      /* Smaller on mobile */
+        --font-size-2xl: 1.25rem;
+        --spacing-16: 2rem;           /* Reduced spacing */
+        --spacing-20: 3rem;
+    }
+    
+    .container {
+        padding-left: var(--spacing-3);
+        padding-right: var(--spacing-3);
+    }
+    
+    .navbar-brand {
+        font-size: var(--font-size-lg);
+    }
+    
+    .card {
+        margin-bottom: var(--spacing-4);
+    }
+    
+    .card-body {
+        padding: var(--spacing-4);
+    }
+    
+    .btn-lg {
+        padding: var(--spacing-3) var(--spacing-6);
+        font-size: var(--font-size-base);
+    }
+    
+    /* Stack cards on mobile */
+    .dashboard-cards .col-md-3 {
+        margin-bottom: var(--spacing-4);
+    }
+    
+    /* Better form layouts on mobile */
+    .platform-buttons .col-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: var(--spacing-2);
+    }
+}
+
+/* Tablet Improvements */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .card-body {
+        padding: var(--spacing-5);
+    }
+    
+    /* Better grid for tablets */
+    .dashboard-cards .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: var(--spacing-4);
+    }
+}
+
+/* Desktop Enhancements */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+    
+    .section-padding {
+        padding-top: var(--spacing-20);
+        padding-bottom: var(--spacing-20);
+    }
+}
+
+/* =============================================================================
+   ENHANCED COMPONENTS
+   ============================================================================= */
+
+/* Improved Status Cards */
+.status-card {
+    background: white;
+    border: 2px solid transparent;
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-6);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cmg-green), var(--teal-blue));
+}
+
+.status-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--cmg-green);
+}
+
+.status-card .icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--spacing-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--cmg-green), var(--aqua-blue));
+    border-radius: var(--radius-full);
+    color: white;
+    font-size: var(--font-size-2xl);
+}
+
+/* Enhanced Form Controls */
+.form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: var(--spacing-2);
+    font-size: var(--font-size-sm);
+}
+
+.form-control {
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-base);
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.form-control:focus {
+    border-color: var(--cmg-green);
+    box-shadow: 0 0 0 3px rgba(146, 193, 59, 0.1);
+    outline: none;
+}
+
+/* Improved Alert System */
+.alert {
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4) var(--spacing-5);
+    border-left: 4px solid;
+    background: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.alert-success {
+    border-left-color: var(--aqua-blue);
+    background: linear-gradient(135deg, #f0fdfa, #ecfdf5);
+    color: #065f46;
+}
+
+.alert-warning {
+    border-left-color: var(--cmg-green);
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    color: #92400e;
+}
+
+.alert-danger {
+    border-left-color: #ef4444;
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    color: #991b1b;
+}
+
+/* =============================================================================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================================================================= */
+
+/* Focus States */
+*:focus {
+    outline: 2px solid var(--cmg-green);
+    outline-offset: 2px;
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 3px rgba(146, 193, 59, 0.5);
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .card {
+        border: 2px solid #000;
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #111827;
+        color: #f9fafb;
+    }
+    
+    .card {
+        background: #1f2937;
+        border-color: #374151;
+    }
+    
+    .card-header {
+        background: #111827;
+        border-color: #374151;
+    }
+}
+
+/* =============================================================================
+   UTILITY CLASSES
+   ============================================================================= */
+
+.text-balance {
+    text-wrap: balance;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--cmg-green), var(--teal-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.smooth-scroll {
+    scroll-behavior: smooth;
+}

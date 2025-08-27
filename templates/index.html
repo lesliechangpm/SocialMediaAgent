@@ -3,79 +3,88 @@
 {% block title %}Dashboard - Social Media Agent | Leslie Chang - CMG Mortgage{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="h3 mb-0">
-                    <i class="fas fa-tachometer-alt text-primary me-2"></i>Dashboard
+<!-- Enhanced Header Section -->
+<section class="section-padding-sm">
+    <div class="row align-items-center">
+        <div class="col-12 col-lg-8">
+            <div class="mb-4 mb-lg-0">
+                <h1 class="h1 mb-3 gradient-text text-balance">
+                    <i class="fas fa-tachometer-alt me-3"></i>Dashboard
                 </h1>
-                <p class="text-muted mb-0">AI-Powered Social Media Content Generator</p>
-            </div>
-            <div>
-                <a href="{{ url_for('generate_page') }}" class="btn btn-primary btn-lg">
-                    <i class="fas fa-magic me-2"></i>Generate Content
-                </a>
+                <p class="lead text-muted mb-0">
+                    AI-Powered Social Media Content Generator for CMG Mortgage
+                </p>
+                <p class="text-muted">
+                    Create engaging, brand-compliant content for all your social media platforms
+                </p>
             </div>
         </div>
+        <div class="col-12 col-lg-4 text-lg-end">
+            <a href="{{ url_for('generate_page') }}" class="btn btn-primary btn-lg shadow-lg">
+                <i class="fas fa-magic me-2"></i>Generate Content
+            </a>
+        </div>
     </div>
-</div>
+</section>
 
-<!-- Status Cards -->
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card border-primary h-100">
-            <div class="card-body text-center">
-                <i class="fas fa-robot fa-2x text-primary mb-2"></i>
-                <h5 class="card-title">AI Status</h5>
-                <p class="card-text">
-                    {% if settings.api_key_set %}
-                        <span class="badge bg-success">Active</span>
-                    {% else %}
-                        <span class="badge bg-warning">Configure API Key</span>
-                    {% endif %}
-                </p>
+<!-- Enhanced Status Cards -->
+<section class="dashboard-cards">
+    <div class="row g-4 mb-5">
+        <div class="col-12 mb-3">
+            <h2 class="h4 text-muted mb-0">System Status</h2>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="status-card h-100">
+                <div class="icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h5 class="h6 mb-2">AI Engine</h5>
+                {% if settings.api_key_set %}
+                    <span class="badge bg-success px-3 py-2">Active & Ready</span>
+                    <p class="text-muted mt-2 mb-0 small">Claude AI Connected</p>
+                {% else %}
+                    <span class="badge bg-warning text-dark px-3 py-2">Setup Required</span>
+                    <p class="text-muted mt-2 mb-0 small">Configure API Key</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="status-card h-100">
+                <div class="icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h5 class="h6 mb-2">Rate Data</h5>
+                {% if rates %}
+                    <span class="badge bg-success px-3 py-2">{{ rates.confidence.title() }}</span>
+                    <p class="text-muted mt-2 mb-0 small">Updated: {{ rates.last_updated }}</p>
+                {% else %}
+                    <span class="badge bg-secondary px-3 py-2">Loading...</span>
+                    <p class="text-muted mt-2 mb-0 small">Fetching rates...</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="status-card h-100">
+                <div class="icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h5 class="h6 mb-2">Profile</h5>
+                <span class="badge bg-success px-3 py-2">{{ settings.loan_officer }}</span>
+                <p class="text-muted mt-2 mb-0 small">Loan Officer</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="status-card h-100">
+                <div class="icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h5 class="h6 mb-2">Company</h5>
+                <span class="badge text-white px-3 py-2" style="background: var(--cmg-green);">{{ settings.company }}</span>
+                <p class="text-muted mt-2 mb-0 small">Mortgage Lender</p>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card border-info h-100">
-            <div class="card-body text-center">
-                <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
-                <h5 class="card-title">Rate Source</h5>
-                <p class="card-text">
-                    {% if rates %}
-                        <span class="badge bg-success">{{ rates.confidence.title() }}</span>
-                    {% else %}
-                        <span class="badge bg-secondary">Loading...</span>
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-success h-100">
-            <div class="card-body text-center">
-                <i class="fas fa-user fa-2x text-success mb-2"></i>
-                <h5 class="card-title">Profile</h5>
-                <p class="card-text">
-                    <span class="badge bg-success">{{ settings.loan_officer }}</span>
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-warning h-100">
-            <div class="card-body text-center">
-                <i class="fas fa-building fa-2x text-warning mb-2"></i>
-                <h5 class="card-title">Company</h5>
-                <p class="card-text">
-                    <span class="badge bg-warning text-dark">{{ settings.company }}</span>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 
 <!-- Current Rates -->
 <div class="row mb-4">

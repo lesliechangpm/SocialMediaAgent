@@ -1,0 +1,494 @@
+/* Advanced UX/UI Improvements - Enhanced Interactions & Visual Polish */
+
+/* =============================================================================
+   MICRO-INTERACTIONS & ANIMATIONS
+   ============================================================================= */
+
+/* Smooth page transitions */
+* {
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Enhanced button interactions */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0); /* Force hardware acceleration */
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Floating animation for primary CTAs */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+}
+
+.btn-primary.btn-lg {
+    animation: float 3s ease-in-out infinite;
+}
+
+.btn-primary.btn-lg:hover {
+    animation: none;
+    transform: translateY(-4px) scale(1.02);
+}
+
+/* =============================================================================
+   ENHANCED CARD INTERACTIONS
+   ============================================================================= */
+
+.status-card {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.status-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.status-card .icon {
+    transition: all 0.3s ease;
+}
+
+.status-card:hover .icon {
+    transform: scale(1.1);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1.1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1.1); }
+}
+
+/* =============================================================================
+   IMPROVED FORM INTERACTIONS
+   ============================================================================= */
+
+/* Enhanced form controls */
+.form-control {
+    position: relative;
+    transition: all 0.3s ease;
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.form-control:hover {
+    border-color: var(--cmg-green);
+    box-shadow: 0 0 0 3px rgba(146, 193, 59, 0.1);
+}
+
+.form-control:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(146, 193, 59, 0.15);
+}
+
+/* Animated form labels */
+.form-label {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.form-label::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--cmg-green);
+    transition: width 0.3s ease;
+}
+
+.form-control:focus ~ .form-label::after,
+.form-control:not(:placeholder-shown) ~ .form-label::after {
+    width: 30px;
+}
+
+/* Platform button enhancements */
+.platform-buttons label {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.platform-buttons label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.platform-buttons label:hover::before {
+    left: 100%;
+}
+
+.platform-buttons input:checked + label {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* =============================================================================
+   LOADING STATES & FEEDBACK
+   ============================================================================= */
+
+/* Enhanced loading spinner */
+@keyframes spin-with-pulse {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.spinner-border {
+    animation: spin-with-pulse 1.5s linear infinite;
+}
+
+/* Loading skeleton for content preview */
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Success/Error feedback animations */
+@keyframes success-bounce {
+    0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+    40%, 43% { transform: translate3d(0, -10px, 0); }
+    70% { transform: translate3d(0, -5px, 0); }
+    90% { transform: translate3d(0, -2px, 0); }
+}
+
+.alert-success {
+    animation: success-bounce 0.8s ease;
+}
+
+.alert-danger {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* =============================================================================
+   PROGRESSIVE DISCLOSURE
+   ============================================================================= */
+
+/* Collapsible sections */
+.collapsible {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.collapsible.active {
+    max-height: 1000px;
+    padding: var(--spacing-4) 0;
+}
+
+/* Advanced options toggle */
+.advanced-toggle {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border: none;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    transition: all 0.3s ease;
+}
+
+.advanced-toggle:hover {
+    background: linear-gradient(145deg, #e9ecef, #dee2e6);
+    transform: translateY(-1px);
+}
+
+.advanced-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.advanced-toggle.active i {
+    transform: rotate(180deg);
+}
+
+/* =============================================================================
+   ENHANCED MOBILE EXPERIENCE
+   ============================================================================= */
+
+/* Better touch targets */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 48px;
+        padding: var(--spacing-3) var(--spacing-6);
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .form-control, .form-select {
+        min-height: 48px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px 16px;
+    }
+    
+    .platform-buttons label {
+        min-height: 80px;
+        padding: var(--spacing-4);
+        margin-bottom: var(--spacing-3);
+    }
+    
+    .platform-buttons .col-12.col-sm-4 {
+        margin-bottom: 12px;
+    }
+    
+    /* Larger status cards on mobile */
+    .status-card {
+        padding: var(--spacing-6) var(--spacing-4);
+        min-height: 140px;
+    }
+    
+    .status-card .icon {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+    }
+    
+    /* Better navigation touch targets */
+    .navbar-nav .nav-link {
+        padding: 12px 16px;
+        margin: 4px 0;
+    }
+    
+    /* Enhanced mobile buttons */
+    .btn-lg {
+        min-height: 56px;
+        padding: 16px 24px;
+        font-size: 18px;
+    }
+    
+    /* Swipe indicators */
+    .swipe-container {
+        position: relative;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .swipe-container::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .swipe-container::after {
+        content: 'Swipe →';
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        animation: fade-in-out 3s infinite;
+    }
+    
+    @keyframes fade-in-out {
+        0%, 50%, 100% { opacity: 0; }
+        25% { opacity: 1; }
+    }
+}
+
+/* =============================================================================
+   CONTENT PREVIEW ENHANCEMENTS
+   ============================================================================= */
+
+/* Preview card improvements */
+#contentPreview {
+    transition: all 0.3s ease;
+    min-height: 300px;
+}
+
+#contentPreview.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Character count visualization */
+.character-count {
+    position: relative;
+    background: linear-gradient(90deg, #28a745 0%, #ffc107 70%, #dc3545 90%);
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.character-count-fill {
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* =============================================================================
+   TOOLTIP SYSTEM
+   ============================================================================= */
+
+/* Custom tooltips */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-container::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+}
+
+.tooltip-container:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+/* =============================================================================
+   NOTIFICATION SYSTEM
+   ============================================================================= */
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    background: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    transform: translateX(350px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-success {
+    border-left: 4px solid #28a745;
+}
+
+.toast-error {
+    border-left: 4px solid #dc3545;
+}
+
+.toast-warning {
+    border-left: 4px solid #ffc107;
+}
+
+/* =============================================================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================================================= */
+
+/* Enhanced focus states */
+*:focus-visible {
+    outline: 2px solid var(--cmg-green);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--cmg-green);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* Screen reader improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* =============================================================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================================================= */
+
+/* Hardware acceleration for smooth animations */
+.btn,
+.card,
+.status-card,
+.form-control {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .btn-primary.btn-lg {
+        animation: none;
+    }
+}
