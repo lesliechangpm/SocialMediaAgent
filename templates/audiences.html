@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Audience Targeting - Social Media Agent{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-users text-primary me-2"></i>Audience Targeting
+                </h1>
+                <p class="text-muted mb-0">Comprehensive demographic and psychographic profiles</p>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary" onclick="loadAudienceData()">
+                    <i class="fas fa-sync-alt me-2"></i>Refresh Data
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Audience Overview Cards -->
+<div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card audience-card millennials h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-mobile-alt fa-2x text-primary me-3"></i>
+                    <div>
+                        <h5 class="card-title mb-0">Millennials</h5>
+                        <small class="text-muted">Ages 27-42</small>
+                    </div>
+                </div>
+                <p class="card-text">First-time buyers focused on affordability and transparency. Digital-first approach to homebuying.</p>
+                <div class="mb-2">
+                    <span class="badge bg-primary me-1">Instagram</span>
+                    <span class="badge bg-info me-1">Facebook</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card audience-card gen-x h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-home fa-2x text-info me-3"></i>
+                    <div>
+                        <h5 class="card-title mb-0">Generation X</h5>
+                        <small class="text-muted">Ages 43-58</small>
+                    </div>
+                </div>
+                <p class="card-text">Established families seeking refinancing and wealth-building strategies. Results-oriented decision makers.</p>
+                <div class="mb-2">
+                    <span class="badge bg-info me-1">Facebook</span>
+                    <span class="badge bg-success me-1">LinkedIn</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card audience-card baby-boomers h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-shield-alt fa-2x text-success me-3"></i>
+                    <div>
+                        <h5 class="card-title mb-0">Baby Boomers</h5>
+                        <small class="text-muted">Ages 59-77</small>
+                    </div>
+                </div>
+                <p class="card-text">Security-focused with emphasis on stability and professional relationships. Detailed decision process.</p>
+                <div class="mb-2">
+                    <span class="badge bg-success me-1">LinkedIn</span>
+                    <span class="badge bg-secondary me-1">Facebook</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card audience-card generation-alpha h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-rocket fa-2x text-warning me-3"></i>
+                    <div>
+                        <h5 class="card-title mb-0">Generation Alpha</h5>
+                        <small class="text-muted">Ages 0-15</small>
+                    </div>
+                </div>
+                <p class="card-text">Future homebuyers focused on sustainability and technology. Digital natives with global connectivity.</p>
+                <div class="mb-2">
+                    <span class="badge bg-warning me-1">TikTok</span>
+                    <span class="badge bg-danger me-1">YouTube</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Audience Profiles -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-pie me-2"></i>Detailed Audience Profiles
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs" id="audienceTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="millennials-tab" data-bs-toggle="tab" data-bs-target="#millennials-content" type="button" role="tab">
+                            <i class="fas fa-mobile-alt me-2"></i>Millennials
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="genx-tab" data-bs-toggle="tab" data-bs-target="#genx-content" type="button" role="tab">
+                            <i class="fas fa-home me-2"></i>Gen X
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="boomers-tab" data-bs-toggle="tab" data-bs-target="#boomers-content" type="button" role="tab">
+                            <i class="fas fa-shield-alt me-2"></i>Baby Boomers
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="genalpha-tab" data-bs-toggle="tab" data-bs-target="#genalpha-content" type="button" role="tab">
+                            <i class="fas fa-rocket me-2"></i>Gen Alpha
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content mt-3" id="audienceTabContent">
+                    <!-- Loading State -->
+                    <div id="audienceLoading" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2 text-muted">Loading audience data...</p>
+                    </div>
+
+                    <!-- Dynamic content will be loaded here -->
+                    <div class="tab-pane fade show active" id="millennials-content" role="tabpanel"></div>
+                    <div class="tab-pane fade" id="genx-content" role="tabpanel"></div>
+                    <div class="tab-pane fade" id="boomers-content" role="tabpanel"></div>
+                    <div class="tab-pane fade" id="genalpha-content" role="tabpanel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let audienceData = null;
+
+// Load audience data on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadAudienceData();
+});
+
+async function loadAudienceData() {
+    try {
+        document.getElementById('audienceLoading').style.display = 'block';
+        
+        const response = await SocialMediaAgent.getAudiences();
+        
+        if (response.success) {
+            audienceData = response.audiences;
+            populateAudienceContent();
+            document.getElementById('audienceLoading').style.display = 'none';
+        } else {
+            throw new Error(response.error || 'Failed to load audience data');
+        }
+    } catch (error) {
+        document.getElementById('audienceLoading').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Failed to load audience data: ${error.message}
+            </div>
+        `;
+    }
+}
+
+function populateAudienceContent() {
+    if (!audienceData) return;
+    
+    Object.keys(audienceData).forEach(audienceKey => {
+        const audience = audienceData[audienceKey];
+        // Handle generation_alpha -> genalpha mapping
+        let targetId = audienceKey.replace('_', '');
+        if (audienceKey === 'generation_alpha') {
+            targetId = 'genalpha';
+        }
+        const contentElement = document.getElementById(`${targetId}-content`);
+        
+        if (contentElement) {
+            contentElement.innerHTML = createAudienceContent(audience);
+        }
+    });
+}
+
+function createAudienceContent(audience) {
+    return `
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card border-0 bg-light mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-chart-bar me-2"></i>Demographics
+                        </h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <strong>Income Range:</strong><br>
+                                <span class="text-muted">${audience.demographics.income_range}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <strong>Life Stage:</strong><br>
+                                <span class="text-muted">${audience.demographics.life_stage}</span>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <strong>Priorities:</strong><br>
+                            ${audience.demographics.priorities.map(priority => 
+                                `<span class="badge bg-primary me-1">${priority}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="mt-3">
+                            <strong>Challenges:</strong><br>
+                            ${audience.demographics.challenges.map(challenge => 
+                                `<span class="badge bg-warning text-dark me-1">${challenge}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-brain me-2"></i>Psychographics
+                        </h6>
+                        <div class="mb-3">
+                            <strong>Values:</strong><br>
+                            ${audience.psychographics.values.map(value => 
+                                `<span class="badge bg-info me-1">${value}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="mb-3">
+                            <strong>Communication Style:</strong><br>
+                            <span class="text-muted">${audience.psychographics.communication_style}</span>
+                        </div>
+                        <div>
+                            <strong>Decision Factors:</strong><br>
+                            ${audience.psychographics.decision_factors.map(factor => 
+                                `<span class="badge bg-secondary me-1">${factor}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card border-0 bg-light mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-mobile-alt me-2"></i>Digital Behavior
+                        </h6>
+                        <div class="mb-3">
+                            <strong>Preferred Platforms:</strong><br>
+                            ${audience.digital_behavior.platforms.map(platform => 
+                                `<span class="badge bg-primary me-1">${platform}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="mb-3">
+                            <strong>Content Preferences:</strong><br>
+                            ${audience.digital_behavior.content_preferences.map(pref => 
+                                `<span class="badge bg-info me-1">${pref}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="mb-3">
+                            <strong>Engagement Style:</strong><br>
+                            <span class="text-muted">${audience.digital_behavior.engagement_style}</span>
+                        </div>
+                        <div>
+                            <strong>Best Posting Times:</strong><br>
+                            ${audience.digital_behavior.posting_times.map(time => 
+                                `<span class="badge bg-success me-1">${time}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-home me-2"></i>Mortgage Focus
+                        </h6>
+                        <div class="mb-3">
+                            <strong>Primary Needs:</strong><br>
+                            ${audience.mortgage_focus.primary_needs.map(need => 
+                                `<span class="badge bg-success me-1">${need}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="mb-3">
+                            <strong>Main Objections:</strong><br>
+                            ${audience.mortgage_focus.objections.map(objection => 
+                                `<span class="badge bg-danger me-1">${objection}</span>`
+                            ).join('')}
+                        </div>
+                        <div>
+                            <strong>Key Motivators:</strong><br>
+                            ${audience.mortgage_focus.motivators.map(motivator => 
+                                `<span class="badge bg-warning text-dark me-1">${motivator}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+</script>
+{% endblock %}

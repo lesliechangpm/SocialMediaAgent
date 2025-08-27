@@ -1,0 +1,158 @@
+# Mortgage Rate Social Media Agent Configuration
+
+# API Configuration
+api:
+  anthropic:
+    model: "claude-3-sonnet-20240229"
+    max_tokens: 1000
+    temperature: 0.7
+  
+  rate_sources:
+    primary: "freddie_mac"
+    fallback: ["financial_news", "cached_data"]
+    timeout: 10
+    cache_duration_hours: 24
+
+# Content Generation Settings
+content:
+  default_platform: "facebook"
+  default_audience: "millennials"
+  default_content_type: "market_update"
+  
+  # Character limits and recommendations
+  platform_limits:
+    facebook:
+      max_chars: 63206
+      recommended_chars: 400
+      max_hashtags: 30
+      recommended_hashtags: 5
+    
+    instagram:
+      max_chars: 2200
+      recommended_chars: 300
+      max_hashtags: 30
+      recommended_hashtags: 15
+    
+    linkedin:
+      max_chars: 3000
+      recommended_chars: 600
+      max_hashtags: 20
+      recommended_hashtags: 5
+
+# Compliance and Safety Settings
+compliance:
+  required_disclaimers:
+    general: "Rates subject to change. Contact for current rates and terms."
+    nmls: "NMLS ID required for all loan officer content"
+    equal_housing: "Equal Housing Opportunity"
+  
+  prohibited_claims:
+    - "Guaranteed approval"
+    - "No credit check required"
+    - "Lowest rates guaranteed"
+    - "Government backing guarantees approval"
+  
+  review_keywords:
+    - "guarantee"
+    - "no risk"
+    - "can't lose"
+    - "sure thing"
+
+# Rate Data Configuration
+rate_data:
+  sources:
+    freddie_mac:
+      url: "http://www.freddiemac.com/pmms/pmms30.html"
+      parser: "html"
+      update_frequency: "weekly"
+    
+    mba:
+      url: "https://www.mba.org/news-research-and-resources"
+      parser: "rss"
+      update_frequency: "weekly"
+  
+  cache:
+    file_path: "data/rate_history.json"
+    max_entries: 30
+    cleanup_interval_days: 7
+
+# Social Media Platform Settings
+platforms:
+  facebook:
+    optimal_posting_times:
+      weekdays: ["1-3 PM"]
+      weekends: ["12-1 PM"]
+    engagement_features: ["reactions", "comments", "shares"]
+    content_types: ["text", "image", "video", "carousel"]
+  
+  instagram:
+    optimal_posting_times:
+      weekdays: ["11 AM-1 PM", "5-7 PM"]
+      weekends: ["10 AM-12 PM"]
+    engagement_features: ["likes", "comments", "shares", "saves"]
+    content_types: ["image", "video", "carousel", "stories", "reels"]
+  
+  linkedin:
+    optimal_posting_times:
+      weekdays: ["8-10 AM", "12-2 PM"]
+      weekends: ["limited engagement"]
+    engagement_features: ["reactions", "comments", "shares"]
+    content_types: ["text", "image", "video", "document", "article"]
+
+# Audience Targeting
+audiences:
+  millennials:
+    age_range: "27-42"
+    platform_preferences: ["instagram", "facebook"]
+    content_preferences: ["educational", "visual", "authentic"]
+    key_motivators: ["affordability", "opportunity", "transparency"]
+  
+  gen_x:
+    age_range: "43-58"
+    platform_preferences: ["facebook", "linkedin"]
+    content_preferences: ["practical", "results-oriented", "efficient"]
+    key_motivators: ["family_benefits", "financial_strategy", "time_saving"]
+  
+  baby_boomers:
+    age_range: "59-77"
+    platform_preferences: ["facebook", "linkedin"]
+    content_preferences: ["detailed", "professional", "relationship-focused"]
+    key_motivators: ["security", "expertise", "personalized_service"]
+
+# Output and Export Settings
+output:
+  default_format: "json"
+  include_metadata: true
+  save_generated_content: true
+  content_history_days: 30
+  
+  export_formats:
+    - "json"
+    - "txt"
+    - "csv"
+    - "html"
+
+# Logging and Monitoring
+logging:
+  level: "INFO"
+  file_path: "logs/mortgage_agent.log"
+  max_file_size_mb: 10
+  backup_count: 5
+  
+  events_to_log:
+    - "rate_fetch_success"
+    - "rate_fetch_failure" 
+    - "content_generation_success"
+    - "content_generation_failure"
+    - "api_calls"
+    - "validation_warnings"
+    - "validation_errors"
+
+# Feature Flags
+features:
+  enable_rate_caching: true
+  enable_content_validation: true
+  enable_compliance_checking: true
+  enable_a_b_testing: true
+  enable_analytics: false
+  enable_scheduling: false

@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Social Media Agent{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-chart-line text-primary me-2"></i>Analytics Dashboard
+                </h1>
+                <p class="text-muted mb-0">Track your social media content performance</p>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary" onclick="refreshAnalytics()">
+                    <i class="fas fa-sync-alt me-2"></i>Refresh Data
+                </button>
+                <button class="btn btn-success" onclick="exportReport()">
+                    <i class="fas fa-download me-2"></i>Export Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Key Metrics Cards -->
+<div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body text-center">
+                <div class="text-primary mb-2">
+                    <i class="fas fa-file-alt fa-3x"></i>
+                </div>
+                <h3 class="card-title" id="totalContentCount">0</h3>
+                <p class="card-text text-muted">Content Generated</p>
+                <small class="text-success">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    <span id="contentGrowth">0%</span> this month
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body text-center">
+                <div class="text-info mb-2">
+                    <i class="fas fa-heart fa-3x"></i>
+                </div>
+                <h3 class="card-title" id="avgEngagement">0</h3>
+                <p class="card-text text-muted">Avg. Engagement</p>
+                <small class="text-info">
+                    <i class="fas fa-chart-line me-1"></i>
+                    <span id="engagementTrend">Trending up</span>
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body text-center">
+                <div class="text-success mb-2">
+                    <i class="fas fa-share-alt fa-3x"></i>
+                </div>
+                <h3 class="card-title" id="totalPlatforms">3</h3>
+                <p class="card-text text-muted">Platforms Active</p>
+                <small class="text-muted">
+                    Instagram, Facebook, LinkedIn
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body text-center">
+                <div class="text-warning mb-2">
+                    <i class="fas fa-clock fa-3x"></i>
+                </div>
+                <h3 class="card-title" id="timeSaved">0</h3>
+                <p class="card-text text-muted">Hours Saved</p>
+                <small class="text-success">
+                    <i class="fas fa-robot me-1"></i>
+                    AI automation
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Content Performance Chart -->
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-area me-2"></i>Content Performance Over Time
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Platform Breakdown -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-share-alt me-2"></i>Platform Performance
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="platform-stat">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fab fa-instagram text-primary fa-2x me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">Instagram</h6>
+                                    <small class="text-muted">Visual content</small>
+                                </div>
+                            </div>
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar bg-primary" style="width: 75%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small>Engagement: <strong>4.2%</strong></small>
+                                <small><span id="instagramPosts">0</span> posts</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="platform-stat">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fab fa-facebook text-info fa-2x me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">Facebook</h6>
+                                    <small class="text-muted">Community building</small>
+                                </div>
+                            </div>
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar bg-info" style="width: 65%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small>Engagement: <strong>3.8%</strong></small>
+                                <small><span id="facebookPosts">0</span> posts</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="platform-stat">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fab fa-linkedin text-success fa-2x me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">LinkedIn</h6>
+                                    <small class="text-muted">Professional network</small>
+                                </div>
+                            </div>
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar bg-success" style="width: 85%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small>Engagement: <strong>5.1%</strong></small>
+                                <small><span id="linkedinPosts">0</span> posts</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Insights -->
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-users me-2"></i>Audience Insights
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-container" style="height: 200px;">
+                    <canvas id="audienceChart"></canvas>
+                </div>
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Millennials</span>
+                        <span class="badge bg-primary">45%</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Gen X</span>
+                        <span class="badge bg-info">35%</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Baby Boomers</span>
+                        <span class="badge bg-success">20%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-trophy me-2"></i>Top Performing Content
+                </h6>
+            </div>
+            <div class="card-body">
+                <div id="topContentList">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="badge bg-primary rounded-pill me-3">1</div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block">Market Update</small>
+                            <strong>Mortgage rates drop to...</strong>
+                            <div class="text-success small">
+                                <i class="fas fa-heart me-1"></i>127 likes
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="badge bg-secondary rounded-pill me-3">2</div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block">Educational</small>
+                            <strong>First-time buyer tips...</strong>
+                            <div class="text-success small">
+                                <i class="fas fa-heart me-1"></i>98 likes
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="badge bg-warning rounded-pill me-3">3</div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block">Promotional</small>
+                            <strong>CMG Mortgage services...</strong>
+                            <div class="text-success small">
+                                <i class="fas fa-heart me-1"></i>82 likes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>AI Insights
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <small>
+                        <strong>Recommendation:</strong> Your educational content performs 40% better on LinkedIn. Consider increasing educational posts for professional audience.
+                    </small>
+                </div>
+                <div class="alert alert-success">
+                    <small>
+                        <strong>Trend Alert:</strong> Market update posts are trending up 25% this month. Great timing with rate changes!
+                    </small>
+                </div>
+                <div class="alert alert-warning">
+                    <small>
+                        <strong>Optimization:</strong> Posts with rate data get 2x more engagement. Include current rates in more content.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let performanceChart = null;
+let audienceChart = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadAnalyticsData();
+    initializeCharts();
+});
+
+async function loadAnalyticsData() {
+    try {
+        // Simulate loading analytics data
+        // In a real app, this would fetch from your analytics API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Update metrics
+        document.getElementById('totalContentCount').textContent = '127';
+        document.getElementById('avgEngagement').textContent = '4.3%';
+        document.getElementById('timeSaved').textContent = '24';
+        document.getElementById('contentGrowth').textContent = '+18%';
+        document.getElementById('instagramPosts').textContent = '45';
+        document.getElementById('facebookPosts').textContent = '38';
+        document.getElementById('linkedinPosts').textContent = '44';
+        
+        // Update charts with data
+        updatePerformanceChart();
+        updateAudienceChart();
+        
+    } catch (error) {
+        console.error('Failed to load analytics data:', error);
+        SocialMediaAgent.showToast('Failed to load analytics data', 'warning');
+    }
+}
+
+function initializeCharts() {
+    // Performance Chart
+    const performanceCtx = document.getElementById('performanceChart');
+    if (performanceCtx) {
+        performanceChart = new Chart(performanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Content Performance',
+                    data: [12, 19, 15, 25, 22, 30],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Audience Chart
+    const audienceCtx = document.getElementById('audienceChart');
+    if (audienceCtx) {
+        audienceChart = new Chart(audienceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Millennials', 'Gen X', 'Baby Boomers'],
+                datasets: [{
+                    data: [45, 35, 20],
+                    backgroundColor: [
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 205, 86)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+}
+
+function updatePerformanceChart() {
+    if (performanceChart) {
+        // Update with real data
+        performanceChart.data.datasets[0].data = [12, 19, 15, 25, 22, 30];
+        performanceChart.update();
+    }
+}
+
+function updateAudienceChart() {
+    if (audienceChart) {
+        // Update with real data
+        audienceChart.data.datasets[0].data = [45, 35, 20];
+        audienceChart.update();
+    }
+}
+
+async function refreshAnalytics() {
+    SocialMediaAgent.showToast('Refreshing analytics data...', 'info');
+    await loadAnalyticsData();
+    SocialMediaAgent.showToast('Analytics data updated successfully!', 'success');
+}
+
+function exportReport() {
+    // Simulate report generation
+    const reportData = {
+        generated_at: new Date().toISOString(),
+        total_content: 127,
+        avg_engagement: 4.3,
+        time_saved: 24,
+        platform_breakdown: {
+            instagram: { posts: 45, engagement: 4.2 },
+            facebook: { posts: 38, engagement: 3.8 },
+            linkedin: { posts: 44, engagement: 5.1 }
+        },
+        audience_distribution: {
+            millennials: 45,
+            gen_x: 35,
+            baby_boomers: 20
+        }
+    };
+    
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `social-media-analytics-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    SocialMediaAgent.showToast('Analytics report exported successfully!', 'success');
+}
+</script>
+{% endblock %}

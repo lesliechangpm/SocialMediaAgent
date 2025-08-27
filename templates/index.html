@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Social Media Agent | Leslie Chang - CMG Mortgage{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-tachometer-alt text-primary me-2"></i>Dashboard
+                </h1>
+                <p class="text-muted mb-0">AI-Powered Social Media Content Generator</p>
+            </div>
+            <div>
+                <a href="{{ url_for('generate_page') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-magic me-2"></i>Generate Content
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card border-primary h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-robot fa-2x text-primary mb-2"></i>
+                <h5 class="card-title">AI Status</h5>
+                <p class="card-text">
+                    {% if settings.api_key_set %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-warning">Configure API Key</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
+                <h5 class="card-title">Rate Source</h5>
+                <p class="card-text">
+                    {% if rates %}
+                        <span class="badge bg-success">{{ rates.confidence.title() }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Loading...</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-success h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-user fa-2x text-success mb-2"></i>
+                <h5 class="card-title">Profile</h5>
+                <p class="card-text">
+                    <span class="badge bg-success">{{ settings.loan_officer }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-warning h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-building fa-2x text-warning mb-2"></i>
+                <h5 class="card-title">Company</h5>
+                <p class="card-text">
+                    <span class="badge bg-warning text-dark">{{ settings.company }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Current Rates -->
+<div class="row mb-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-area me-2"></i>Current Mortgage Rates
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if rates %}
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="border-end pe-3">
+                            <h2 class="text-primary mb-0">{{ "%.2f"|format(rates.current_rate) }}%</h2>
+                            <small class="text-muted">30-Year Fixed</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border-end pe-3">
+                            <h4 class="mb-0 
+                                {% if rates.rate_change > 0 %}text-danger
+                                {% elif rates.rate_change < 0 %}text-success
+                                {% else %}text-secondary{% endif %}">
+                                {% if rates.rate_change > 0 %}+{% endif %}{{ "%.2f"|format(rates.rate_change) }}%
+                            </h4>
+                            <small class="text-muted">Weekly Change</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="mb-0">{{ rates.date }}</h6>
+                        <small class="text-muted">{{ rates.source }}</small>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading rates...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Fetching current mortgage rates...</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Quick Actions
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('generate_page') }}" class="btn btn-primary">
+                        <i class="fas fa-magic me-2"></i>Generate Content
+                    </a>
+                    <button class="btn btn-outline-secondary" onclick="refreshRates()">
+                        <i class="fas fa-sync-alt me-2"></i>Refresh Rates
+                    </button>
+                    <a href="{{ url_for('audiences_page') }}" class="btn btn-outline-info">
+                        <i class="fas fa-users me-2"></i>View Audiences
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Market Analysis -->
+{% if market_analysis %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>Market Analysis
+                </h6>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">{{ market_analysis }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Quick Generate Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-rocket me-2"></i>Quick Content Generation
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body text-center">
+                                <i class="fab fa-instagram fa-2x text-primary mb-2"></i>
+                                <h6>Instagram</h6>
+                                <p class="small text-muted mb-3">Millennials • Educational</p>
+                                <button class="btn btn-sm btn-primary" onclick="quickGenerate('instagram', 'millennials', 'educational')">
+                                    Generate Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body text-center">
+                                <i class="fab fa-facebook fa-2x text-info mb-2"></i>
+                                <h6>Facebook</h6>
+                                <p class="small text-muted mb-3">Gen X • Market Update</p>
+                                <button class="btn btn-sm btn-info" onclick="quickGenerate('facebook', 'gen_x', 'market_update')">
+                                    Generate Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body text-center">
+                                <i class="fab fa-linkedin fa-2x text-success mb-2"></i>
+                                <h6>LinkedIn</h6>
+                                <p class="small text-muted mb-3">Baby Boomers • Professional</p>
+                                <button class="btn btn-sm btn-success" onclick="quickGenerate('linkedin', 'baby_boomers', 'promotional')">
+                                    Generate Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Generate Modal -->
+<div class="modal fade" id="quickGenerateModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-magic me-2"></i>Generated Content
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="quickGenerateContent">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2">Generating AI content...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="copyContent()">
+                    <i class="fas fa-copy me-2"></i>Copy Content
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Dashboard specific JavaScript
+let currentGeneratedContent = '';
+
+function refreshRates() {
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Refreshing...';
+    btn.disabled = true;
+    
+    fetch('/api/rates')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); // Simple refresh for now
+            } else {
+                alert('Failed to refresh rates: ' + data.error);
+            }
+        })
+        .catch(error => {
+            alert('Error refreshing rates: ' + error);
+        })
+        .finally(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+}
+
+function quickGenerate(platform, audience, contentType) {
+    const modal = new bootstrap.Modal(document.getElementById('quickGenerateModal'));
+    modal.show();
+    
+    const payload = {
+        platform: platform,
+        audience: audience,
+        content_type: contentType,
+        loan_officer: '{{ settings.loan_officer }}',
+        company: '{{ settings.company }}'
+    };
+    
+    fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const contentDiv = document.getElementById('quickGenerateContent');
+        
+        if (data.success) {
+            currentGeneratedContent = data.content.content;
+            contentDiv.innerHTML = `
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>Content generated successfully!
+                </div>
+                <div class="mb-3">
+                    <strong>Platform:</strong> ${data.content.platform.charAt(0).toUpperCase() + data.content.platform.slice(1)}
+                    <br>
+                    <strong>Audience:</strong> ${data.content.audience.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    <br>
+                    <strong>Type:</strong> ${data.content.content_type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                </div>
+                <div class="border p-3 rounded bg-light">
+                    <pre style="white-space: pre-wrap; font-family: inherit;">${data.content.content}</pre>
+                </div>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <strong>Character Count:</strong> ${data.content.character_count} | 
+                        <strong>Generated:</strong> ${new Date().toLocaleString()}
+                    </small>
+                </div>
+            `;
+        } else {
+            contentDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Failed to generate content: ${data.error}
+                </div>
+            `;
+        }
+    })
+    .catch(error => {
+        document.getElementById('quickGenerateContent').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Error: ${error}
+            </div>
+        `;
+    });
+}
+
+function copyContent() {
+    if (currentGeneratedContent) {
+        navigator.clipboard.writeText(currentGeneratedContent).then(() => {
+            // Show success feedback
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-success');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-primary');
+            }, 2000);
+        });
+    }
+}
+</script>
+{% endblock %}

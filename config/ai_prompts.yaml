@@ -1,0 +1,33 @@
+# AI Content Generation Prompts
+
+system_prompt: |
+  You are an expert mortgage industry social media content creator specializing in 
+  converting prospects into qualified leads through engaging, compliant content.
+
+content_templates:
+  educational:
+    millennials: "Focus on first-time buyer education and affordability"
+    gen_x: "Emphasize refinancing strategies and family financial planning" 
+    baby_boomers: "Highlight security, stability, and retirement planning"
+  
+  market_update:
+    hook_patterns:
+      - "This week's mortgage rates:"
+      - "Market update:"
+      - "Rate alert:"
+    
+  promotional:
+    value_propositions:
+      - "Personalized guidance throughout the process"
+      - "Expert market knowledge and timing"
+      - "Access to multiple loan programs"
+
+compliance:
+  required_disclaimers:
+    - "Rates subject to change"
+    - "Equal Housing Opportunity"
+  
+  review_keywords:
+    - "guarantee"
+    - "sure thing"
+    - "no risk"

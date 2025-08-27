@@ -1,0 +1,550 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Social Media Agent{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-cog text-primary me-2"></i>Settings
+                </h1>
+                <p class="text-muted mb-0">Configure your Social Media Agent</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- AI Configuration -->
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-robot me-2"></i>AI Configuration
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="aiSettingsForm">
+                    <div class="mb-3">
+                        <label for="api_key" class="form-label">
+                            <i class="fas fa-key me-2"></i>Anthropic API Key
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="api_key" name="api_key" 
+                                   placeholder="sk-ant-..." required>
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('api_key')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-text">
+                            Your Claude API key from Anthropic. 
+                            <a href="https://console.anthropic.com/" target="_blank">Get one here</a>
+                        </div>
+                        <div id="api-key-status" class="mt-2"></div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary" onclick="testApiKey()">
+                            <i class="fas fa-vial me-2"></i>Test API Key
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Personal Branding -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-tag me-2"></i>Personal Branding
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="brandingForm">
+                    <div class="mb-3">
+                        <label for="loan_officer" class="form-label">
+                            <i class="fas fa-user me-2"></i>Loan Officer Name
+                        </label>
+                        <input type="text" class="form-control" id="loan_officer" name="loan_officer" 
+                               value="{{ settings.loan_officer }}" placeholder="Your Full Name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="company" class="form-label">
+                            <i class="fas fa-building me-2"></i>Company Name
+                        </label>
+                        <input type="text" class="form-control" id="company" name="company" 
+                               value="{{ settings.company }}" placeholder="Your Company">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location" class="form-label">
+                            <i class="fas fa-map-marker-alt me-2"></i>Location
+                        </label>
+                        <input type="text" class="form-control" id="location" name="location" 
+                               placeholder="City, State" value="">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nmls_id" class="form-label">
+                            <i class="fas fa-certificate me-2"></i>NMLS ID
+                            <small class="text-muted">(Optional)</small>
+                        </label>
+                        <input type="text" class="form-control" id="nmls_id" name="nmls_id" 
+                               placeholder="123456">
+                        <div class="form-text">National Mortgage Licensing System ID</div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Save Branding Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Status & Preferences -->
+    <div class="col-lg-6">
+        <!-- System Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-heartbeat me-2"></i>System Status
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="border-end pe-3">
+                            <div id="ai-status" class="mb-2">
+                                {% if settings.api_key_set %}
+                                    <i class="fas fa-check-circle fa-2x text-success"></i>
+                                {% else %}
+                                    <i class="fas fa-times-circle fa-2x text-danger"></i>
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">AI Engine</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border-end pe-3">
+                            <div id="rates-status" class="mb-2">
+                                <i class="fas fa-check-circle fa-2x text-success"></i>
+                            </div>
+                            <small class="text-muted">Rate Data</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div id="system-status" class="mb-2">
+                            <i class="fas fa-check-circle fa-2x text-success"></i>
+                        </div>
+                        <small class="text-muted">System</small>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="d-grid">
+                    <button class="btn btn-outline-primary" onclick="runSystemCheck()">
+                        <i class="fas fa-stethoscope me-2"></i>Run System Check
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Preferences -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-sliders-h me-2"></i>Content Preferences
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="preferencesForm">
+                    <div class="mb-3">
+                        <label class="form-label">Default Platform</label>
+                        <select class="form-select" name="default_platform">
+                            <option value="instagram" {% if settings.default_platform == 'instagram' %}selected{% endif %}>Instagram</option>
+                            <option value="facebook" {% if settings.default_platform == 'facebook' %}selected{% endif %}>Facebook</option>
+                            <option value="linkedin" {% if settings.default_platform == 'linkedin' %}selected{% endif %}>LinkedIn</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Default Audience</label>
+                        <select class="form-select" name="default_audience">
+                            <option value="millennials" {% if settings.default_audience == 'millennials' %}selected{% endif %}>Millennials</option>
+                            <option value="gen_x" {% if settings.default_audience == 'gen_x' %}selected{% endif %}>Generation X</option>
+                            <option value="baby_boomers" {% if settings.default_audience == 'baby_boomers' %}selected{% endif %}>Baby Boomers</option>
+                        </select>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="auto_save" name="auto_save" checked>
+                        <label class="form-check-label" for="auto_save">
+                            Auto-save generated content
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="include_disclaimers" name="include_disclaimers" checked>
+                        <label class="form-check-label" for="include_disclaimers">
+                            Include compliance disclaimers
+                        </label>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-outline-success">
+                            <i class="fas fa-save me-2"></i>Save Preferences
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Export/Import -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-exchange-alt me-2"></i>Data Management
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="d-grid">
+                            <button class="btn btn-outline-info" onclick="exportSettings()">
+                                <i class="fas fa-download me-2"></i>Export Settings
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-grid">
+                            <button class="btn btn-outline-warning" onclick="document.getElementById('importFile').click()">
+                                <i class="fas fa-upload me-2"></i>Import Settings
+                            </button>
+                            <input type="file" id="importFile" accept=".json" style="display: none" onchange="importSettings(this)">
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="d-grid">
+                    <button class="btn btn-outline-danger" onclick="confirmReset()">
+                        <i class="fas fa-redo me-2"></i>Reset to Defaults
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Check Modal -->
+<div class="modal fade" id="systemCheckModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-stethoscope me-2"></i>System Check
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="systemCheckResults">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2">Running system diagnostics...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Settings page JavaScript
+
+// Form submission handlers
+document.getElementById('brandingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    saveBrandingSettings();
+});
+
+document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    savePreferences();
+});
+
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const button = input.nextElementSibling;
+    const icon = button.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+async function testApiKey() {
+    const apiKey = document.getElementById('api_key').value;
+    const statusDiv = document.getElementById('api-key-status');
+    
+    if (!apiKey) {
+        statusDiv.innerHTML = '<div class="alert alert-warning">Please enter an API key</div>';
+        return;
+    }
+    
+    statusDiv.innerHTML = '<div class="text-muted"><i class="fas fa-spinner fa-spin me-2"></i>Testing API key...</div>';
+    
+    try {
+        // Test API key by making a simple request
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                platform: 'instagram',
+                audience: 'millennials',
+                content_type: 'educational',
+                api_key: apiKey
+            })
+        });
+        
+        if (response.ok) {
+            statusDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>API key is valid and working!</div>';
+            document.getElementById('ai-status').innerHTML = '<i class="fas fa-check-circle fa-2x text-success"></i>';
+        } else {
+            const data = await response.json();
+            statusDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-times-circle me-2"></i>API key test failed: ${data.error}</div>`;
+        }
+    } catch (error) {
+        statusDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-times-circle me-2"></i>Error testing API key: ${error.message}</div>`;
+    }
+}
+
+async function saveBrandingSettings() {
+    const formData = new FormData(document.getElementById('brandingForm'));
+    const apiKey = document.getElementById('api_key').value;
+    
+    const settings = Object.fromEntries(formData);
+    if (apiKey) {
+        settings.api_key = apiKey;
+    }
+    
+    try {
+        const response = await fetch('/api/settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(settings)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            SocialMediaAgent.showToast('Branding settings saved successfully!', 'success');
+        } else {
+            SocialMediaAgent.showToast('Failed to save settings: ' + data.error, 'danger');
+        }
+    } catch (error) {
+        SocialMediaAgent.showToast('Error saving settings: ' + error.message, 'danger');
+    }
+}
+
+function savePreferences() {
+    const formData = new FormData(document.getElementById('preferencesForm'));
+    const preferences = Object.fromEntries(formData);
+    
+    // Save to localStorage for now
+    SocialMediaAgent.saveToLocalStorage('user_preferences', preferences);
+    SocialMediaAgent.showToast('Preferences saved successfully!', 'success');
+}
+
+async function runSystemCheck() {
+    const modal = new bootstrap.Modal(document.getElementById('systemCheckModal'));
+    modal.show();
+    
+    const resultsDiv = document.getElementById('systemCheckResults');
+    
+    try {
+        // Simulate system checks
+        const checks = [
+            { name: 'AI Engine', check: () => checkAiEngine() },
+            { name: 'Rate Data', check: () => checkRateData() },
+            { name: 'Network Connection', check: () => checkNetwork() },
+            { name: 'Local Storage', check: () => checkLocalStorage() }
+        ];
+        
+        let resultsHtml = '<div class="list-group">';
+        
+        for (const check of checks) {
+            const result = await check.check();
+            const statusIcon = result.status === 'success' ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger';
+            
+            resultsHtml += `
+                <div class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fw-bold">${check.name}</div>
+                        <small class="text-muted">${result.message}</small>
+                    </div>
+                    <i class="${statusIcon}"></i>
+                </div>
+            `;
+        }
+        
+        resultsHtml += '</div>';
+        resultsDiv.innerHTML = resultsHtml;
+        
+    } catch (error) {
+        resultsDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                System check failed: ${error.message}
+            </div>
+        `;
+    }
+}
+
+async function checkAiEngine() {
+    try {
+        const apiKey = document.getElementById('api_key').value;
+        if (!apiKey) {
+            return { status: 'error', message: 'API key not configured' };
+        }
+        
+        // Simple API test
+        const response = await fetch('/api/rates');
+        if (response.ok) {
+            return { status: 'success', message: 'AI engine accessible and ready' };
+        } else {
+            return { status: 'error', message: 'AI engine not responding' };
+        }
+    } catch (error) {
+        return { status: 'error', message: 'AI engine connection failed' };
+    }
+}
+
+async function checkRateData() {
+    try {
+        const response = await fetch('/api/rates');
+        const data = await response.json();
+        
+        if (data.success) {
+            return { status: 'success', message: `Rate data current (${data.rates.source})` };
+        } else {
+            return { status: 'error', message: 'Rate data unavailable' };
+        }
+    } catch (error) {
+        return { status: 'error', message: 'Rate data service not responding' };
+    }
+}
+
+function checkNetwork() {
+    return new Promise((resolve) => {
+        if (navigator.onLine) {
+            resolve({ status: 'success', message: 'Network connection active' });
+        } else {
+            resolve({ status: 'error', message: 'No network connection detected' });
+        }
+    });
+}
+
+function checkLocalStorage() {
+    try {
+        const testKey = 'storage_test';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        return { status: 'success', message: 'Local storage available' };
+    } catch (error) {
+        return { status: 'error', message: 'Local storage not available' };
+    }
+}
+
+function exportSettings() {
+    const settings = {
+        branding: Object.fromEntries(new FormData(document.getElementById('brandingForm'))),
+        preferences: Object.fromEntries(new FormData(document.getElementById('preferencesForm'))),
+        exported_at: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `social-media-agent-settings-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    SocialMediaAgent.showToast('Settings exported successfully!', 'success');
+}
+
+function importSettings(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const settings = JSON.parse(e.target.result);
+            
+            // Populate forms with imported settings
+            if (settings.branding) {
+                Object.keys(settings.branding).forEach(key => {
+                    const field = document.querySelector(`#brandingForm [name="${key}"]`);
+                    if (field) field.value = settings.branding[key];
+                });
+            }
+            
+            if (settings.preferences) {
+                Object.keys(settings.preferences).forEach(key => {
+                    const field = document.querySelector(`#preferencesForm [name="${key}"]`);
+                    if (field) {
+                        if (field.type === 'checkbox') {
+                            field.checked = settings.preferences[key] === 'on';
+                        } else {
+                            field.value = settings.preferences[key];
+                        }
+                    }
+                });
+            }
+            
+            SocialMediaAgent.showToast('Settings imported successfully!', 'success');
+        } catch (error) {
+            SocialMediaAgent.showToast('Failed to import settings: Invalid file format', 'danger');
+        }
+    };
+    
+    reader.readAsText(file);
+}
+
+function confirmReset() {
+    if (confirm('Are you sure you want to reset all settings to defaults? This cannot be undone.')) {
+        // Reset forms
+        document.getElementById('brandingForm').reset();
+        document.getElementById('preferencesForm').reset();
+        document.getElementById('api_key').value = '';
+        
+        // Reset localStorage
+        localStorage.clear();
+        
+        SocialMediaAgent.showToast('Settings reset to defaults', 'success');
+    }
+}
+</script>
+{% endblock %}

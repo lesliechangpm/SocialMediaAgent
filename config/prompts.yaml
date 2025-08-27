@@ -1,0 +1,75 @@
+# Content Generation Prompts for Different Scenarios
+
+base_prompt: |
+  You are an expert mortgage industry social media content creator. Generate engaging, professional social media content for loan officers.
+
+market_update_prompt: |
+  Create a market update post about current mortgage rates. Focus on:
+  - Current rate information with context
+  - What this means for potential borrowers
+  - Market factors influencing rates
+  - Professional insight without being overly promotional
+  - Encourage engagement through questions or discussion
+
+educational_prompt: |
+  Create educational content that helps your audience understand mortgage rates. Include:
+  - Clear explanation of current market conditions
+  - How rates affect buying power or refinancing opportunities
+  - Tips or insights relevant to the target audience
+  - Call-to-action for learning more
+  - Professional expertise demonstration
+
+promotional_prompt: |
+  Create promotional content that showcases your services while providing value. Include:
+  - Current rate information as a hook
+  - Your expertise and value proposition
+  - Specific benefits for the target audience
+  - Clear but not pushy call-to-action
+  - Trust-building elements
+
+call_to_action_prompt: |
+  Create a compelling call-to-action post. Focus on:
+  - Urgency or opportunity related to current rates
+  - Clear benefit statement for taking action
+  - Easy next steps for interested prospects
+  - Professional credibility indicators
+  - Audience-specific pain points or desires
+
+# Platform-specific prompt additions
+platform_additions:
+  facebook:
+    - "Optimize for Facebook's algorithm by encouraging comments and shares"
+    - "Use conversational tone that invites discussion"
+    - "Consider longer-form content that provides detailed value"
+    
+  instagram:
+    - "Create visually-oriented content that would pair well with images"
+    - "Use engaging hooks that stop the scroll"
+    - "Include strategic hashtags for discoverability"
+    - "Keep mobile-first readability in mind"
+    
+  linkedin:
+    - "Demonstrate thought leadership and industry expertise"
+    - "Use professional tone while remaining approachable"
+    - "Include insights that would be valuable to industry peers"
+    - "Focus on business and career implications"
+
+# Audience-specific considerations
+audience_considerations:
+  millennials:
+    - "Address affordability concerns and first-time buyer challenges"
+    - "Use accessible language and explain complex terms"
+    - "Focus on future-building and opportunity"
+    - "Include technology and convenience factors"
+    
+  gen_x:
+    - "Emphasize practical benefits and financial strategy"
+    - "Focus on family considerations and wealth building"
+    - "Highlight time-saving and efficient processes"
+    - "Address refinancing and home equity opportunities"
+    
+  baby_boomers:
+    - "Emphasize stability, security, and proven expertise"
+    - "Use respectful, professional tone throughout"
+    - "Focus on preservation of wealth and careful planning"
+    - "Highlight personalized service and relationship building"
