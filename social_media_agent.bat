@@ -5,16 +5,27 @@ echo Leslie Chang - CMG Mortgage
 echo =========================================
 echo.
 
-REM Check if API key is set
-if "%ANTHROPIC_API_KEY%"=="" (
-    echo ERROR: ANTHROPIC_API_KEY environment variable not set!
+REM Check if .env file exists and has API key configured
+if exist .env (
+    echo Found .env file - checking API key configuration...
+    findstr /C:"ANTHROPIC_API_KEY=your_anthropic_api_key_here" .env >nul
+    if not errorlevel 1 (
+        echo.
+        echo WARNING: API key not configured in .env file!
+        echo Edit .env file and replace 'your_anthropic_api_key_here' with your actual key
+        echo.
+        echo The agent will work with fallback templates, but AI features require the API key.
+        echo Press any key to continue with fallback mode...
+        pause
+    )
+) else (
     echo.
-    echo Please set your Anthropic API key:
-    echo set ANTHROPIC_API_KEY=your_key_here
+    echo WARNING: .env file not found!
+    echo Copy .env.example to .env and add your API key for full functionality
     echo.
-    echo Or copy .env.production to .env and edit with your key
+    echo The agent will work with fallback templates only.
+    echo Press any key to continue with fallback mode...
     pause
-    exit /b 1
 )
 
 :menu

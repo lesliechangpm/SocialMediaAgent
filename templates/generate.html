@@ -247,16 +247,46 @@ document.querySelectorAll('input[name="platform"]').forEach(radio => {
 document.getElementById('audience').addEventListener('change', updateContentTips);
 
 function generateContent() {
-    const formData = new FormData(document.getElementById('generateForm'));
+    console.log('Starting generateContent function'); // Debug log
+    
+    const generateForm = document.getElementById('generateForm');
+    if (!generateForm) {
+        console.error('Generate form not found!');
+        return;
+    }
+    
+    const formData = new FormData(generateForm);
     const payload = Object.fromEntries(formData);
     
-    // Show loading state
+    // Show loading state - with comprehensive error checking
     const previewDiv = document.getElementById('contentPreview');
     const emptyState = document.getElementById('emptyState');
     const loadingState = document.getElementById('loadingState');
     
-    emptyState.style.display = 'none';
-    loadingState.style.display = 'block';
+    console.log('Elements found:', { 
+        previewDiv: previewDiv !== null, 
+        emptyState: emptyState !== null, 
+        loadingState: loadingState !== null 
+    }); // Debug log
+    
+    if (!previewDiv) {
+        console.error('contentPreview element not found!');
+        alert('Error: Page elements not found. Please refresh the page.');
+        return;
+    }
+    
+    // Add null checks to prevent errors
+    if (emptyState && emptyState.style) {
+        emptyState.style.display = 'none';
+    } else {
+        console.warn('emptyState element or style not found');
+    }
+    
+    if (loadingState && loadingState.style) {
+        loadingState.style.display = 'block';
+    } else {
+        console.warn('loadingState element or style not found');
+    }
     
     fetch('/api/generate', {
         method: 'POST',
@@ -267,21 +297,28 @@ function generateContent() {
     })
     .then(response => response.json())
     .then(data => {
-        loadingState.style.display = 'none';
+        if (loadingState && loadingState.style) {
+            loadingState.style.display = 'none';
+        }
         
         if (data.success) {
             currentContent = data.content;
             displayContent(data.content);
-            document.getElementById('copyBtn').disabled = false;
-            document.getElementById('saveBtn').disabled = false;
+            const copyBtn = document.getElementById('copyBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            if (copyBtn) copyBtn.disabled = false;
+            if (saveBtn) saveBtn.disabled = false;
             
             // Show success toast
             if (window.socialMediaAgentUX) {
                 window.socialMediaAgentUX.showToast('Content generated successfully!', 'success', 3000);
             }
         } else {
-            emptyState.style.display = 'block';
-            previewDiv.innerHTML = `
+            if (emptyState && emptyState.style) {
+                emptyState.style.display = 'block';
+            }
+            if (previewDiv) {
+                previewDiv.innerHTML = `
                 <div class="alert alert-danger animate__animated animate__shakeX">
                     <i class="fas fa-exclamation-triangle me-2"></i>
                     <strong>Generation failed:</strong> ${data.error}
@@ -290,6 +327,7 @@ function generateContent() {
                     </button>
                 </div>
             `;
+            }
             
             // Show error toast
             if (window.socialMediaAgentUX) {
@@ -298,22 +336,30 @@ function generateContent() {
         }
     })
     .catch(error => {
-        loadingState.style.display = 'none';
-        emptyState.style.display = 'block';
+        console.error('Generation error:', error); // Debug log
+        if (loadingState && loadingState.style) {
+            loadingState.style.display = 'none';
+        }
+        if (emptyState && emptyState.style) {
+            emptyState.style.display = 'block';
+        }
         
-        previewDiv.innerHTML = `
+        if (previewDiv) {
+            previewDiv.innerHTML = `
             <div class="alert alert-danger">
                 <i class="fas fa-exclamation-triangle me-2"></i>
-                <strong>Connection Error:</strong> ${error}
+                <strong>Connection Error:</strong> ${error.message || error}
+                <br><small class="text-muted">Check browser console (F12) for more details</small>
                 <button class="btn btn-sm btn-outline-danger ms-3" onclick="generateContent()">
                     <i class="fas fa-redo me-1"></i>Retry
                 </button>
             </div>
         `;
+        }
         
         // Show error toast
         if (window.socialMediaAgentUX) {
-            window.socialMediaAgentUX.showToast('Connection error. Please check your internet and try again.', 'error', 5000);
+            window.socialMediaAgentUX.showToast('Error: ' + (error.message || error), 'error', 5000);
         }
     });
 }
@@ -384,6 +430,8 @@ function generateVariations() {
 function displayContent(content) {
     const previewDiv = document.getElementById('contentPreview');
     
+    console.log('Content received:', content); // Debug log
+    
     let visualSuggestion = '';
     if (content.visual_concept) {
         if (typeof content.visual_concept === 'object') {
@@ -393,6 +441,16 @@ function displayContent(content) {
         }
     }
     
+    // Get current form values as fallback since API doesn't return these fields
+    const currentPlatform = document.querySelector('input[name="platform"]:checked')?.value || 'instagram';
+    const currentAudience = document.getElementById('audience')?.value || 'millennials';
+    const currentContentType = document.getElementById('content_type')?.value || 'market_update';
+    
+    // Always use form values since API response doesn't include these
+    const platform = currentPlatform;
+    const audience = currentAudience;
+    const contentType = currentContentType;
+    
     previewDiv.innerHTML = `
         <div class="alert alert-success">
             <i class="fas fa-check-circle me-2"></i>Content generated successfully!
@@ -401,18 +459,18 @@ function displayContent(content) {
         <div class="mb-3">
             <div class="row">
                 <div class="col-6">
-                    <strong>Platform:</strong> ${content.platform.charAt(0).toUpperCase() + content.platform.slice(1)}
+                    <strong>Platform:</strong> ${platform ? platform.charAt(0).toUpperCase() + platform.slice(1) : 'Unknown'}
                 </div>
                 <div class="col-6">
-                    <strong>Audience:</strong> ${content.audience.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    <strong>Audience:</strong> ${audience ? audience.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Unknown'}
                 </div>
             </div>
             <div class="row mt-2">
                 <div class="col-6">
-                    <strong>Type:</strong> ${content.content_type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    <strong>Type:</strong> ${contentType ? contentType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Unknown'}
                 </div>
                 <div class="col-6">
-                    <strong>Characters:</strong> ${content.character_count}
+                    <strong>Characters:</strong> ${content.character_count || 'N/A'}
                 </div>
             </div>
         </div>

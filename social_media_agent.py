@@ -251,6 +251,35 @@ class SmartAudienceTargeting:
     def _load_enhanced_profiles(self) -> Dict:
         """Load comprehensive audience profiles"""
         return {
+            "gen_z": {
+                "name": "Generation Z",
+                "age_range": "18-26",
+                "demographics": {
+                    "income_range": "$25K-$55K",
+                    "life_stage": "Early career, first-time buyers, apartment renters",
+                    "priorities": ["affordability", "digital-first experience", "social impact"],
+                    "challenges": ["limited credit history", "student debt", "high rent costs", "saving challenges"]
+                },
+                "psychographics": {
+                    "values": ["authenticity", "diversity", "environmental consciousness", "financial transparency"],
+                    "communication_style": "direct, visual, mobile-first, informal",
+                    "decision_factors": ["mobile research", "social proof", "influencer recommendations", "instant access"],
+                    "pain_points": ["complex traditional processes", "lack of digital options", "financial jargon"]
+                },
+                "digital_behavior": {
+                    "platforms": ["tiktok", "instagram", "snapchat"],
+                    "content_preferences": ["short videos", "stories", "reels", "memes"],
+                    "engagement_style": "visual, interactive, community-driven",
+                    "posting_times": ["12-3PM", "7-9PM", "9-11PM"]
+                },
+                "mortgage_focus": {
+                    "primary_needs": ["first-time buyer education", "credit building", "down payment assistance"],
+                    "secondary_needs": ["rent vs buy analysis", "pre-qualification", "mobile-friendly process"],
+                    "objections": ["too young to buy", "can't afford", "process too complicated"],
+                    "motivators": ["stop paying rent", "build credit", "financial independence", "future planning"]
+                }
+            },
+            
             "millennials": {
                 "name": "Millennials",
                 "age_range": "27-42",
@@ -343,6 +372,18 @@ class SmartAudienceTargeting:
         """Get comprehensive audience profile"""
         return self.profiles.get(audience.lower().replace(" ", "_"), self.profiles["millennials"])
     
+    def list_audiences(self) -> List[Dict]:
+        """List all available audiences with their basic info"""
+        audience_list = []
+        for key, profile in self.profiles.items():
+            audience_list.append({
+                "key": key,
+                "name": profile["name"],
+                "age_range": profile["age_range"],
+                "description": profile["demographics"]["life_stage"]
+            })
+        return audience_list
+    
     def generate_targeting_insights(self, audience: str, content_type: str, platform: str) -> Dict:
         """Generate AI-enhanced targeting insights"""
         profile = self.get_profile(audience)
@@ -362,6 +403,11 @@ class SmartAudienceTargeting:
         base_style = profile["psychographics"]["communication_style"]
         
         tone_matrix = {
+            "gen_z": {
+                "educational": "Direct and visual with bite-sized, mobile-friendly explanations",
+                "promotional": "Authentic and relatable, emphasizing social impact and transparency",
+                "market_update": "Informal but informative, with trending language and instant value"
+            },
             "millennials": {
                 "educational": "Friendly and approachable with clear, jargon-free explanations",
                 "promotional": "Authentic and transparent, focusing on benefits and social proof",
@@ -412,6 +458,11 @@ class SmartAudienceTargeting:
         audience_name = profile["name"].lower().replace(" ", "_")
         
         cta_matrix = {
+            "gen_z": {
+                "instagram": "Ready to stop throwing money at rent? DM me and let's make homeownership happen! 🏠",
+                "facebook": "Thinking about buying your first home? Drop a comment or slide into my DMs!",
+                "linkedin": "Want to learn about first-time buyer programs? Let's connect and chat!"
+            },
             "millennials": {
                 "instagram": "Ready to explore homeownership? Comment below or DM me to get started.",
                 "facebook": "Ready to take the next step? Comment below or send me a message - I'm here to help!",
@@ -434,6 +485,11 @@ class SmartAudienceTargeting:
     def _generate_content_hooks(self, profile: Dict, content_type: str) -> List[str]:
         """Generate attention-grabbing content hooks"""
         hooks = {
+            "gen_z": [
+                "Tired of making your landlord rich? Here's how to buy your first home",
+                "This mortgage hack will change your whole financial future",
+                "Why renting is keeping you broke (and what to do instead)"
+            ],
             "millennials": [
                 "Your dream home is more affordable than you think",
                 "Stop paying someone else's mortgage - here's how to buy",
@@ -462,6 +518,8 @@ class SmartAudienceTargeting:
             "rates too high": "Even with today's rates, homeownership builds wealth over time vs. renting",
             "can't afford": "Let's explore all available programs - you might qualify for more than you think",
             "process too complex": "I'll guide you through every step and make it as simple as possible",
+            "process too complicated": "I'll simplify everything and handle all the complex stuff for you",
+            "too young to buy": "Age isn't the factor - stable income and good credit are what matter most",
             "closing costs vs. savings": "Let's run the numbers to see your real break-even point",
             "timing concerns": "I'll help you determine the optimal timing based on your specific situation",
             "qualification changes": "Lending requirements are stable - let's review your current position"
@@ -480,6 +538,11 @@ class SmartAudienceTargeting:
         audience_name = profile["name"].lower().replace(" ", "_")
         
         specific_props = {
+            "gen_z": [
+                "Mobile-first application process and digital tools",
+                "Credit building guidance and first-time buyer programs",
+                "Transparent, jargon-free explanations of all options"
+            ],
             "millennials": [
                 "First-time buyer programs and down payment assistance",
                 "Technology-driven process for faster approvals",
@@ -530,7 +593,7 @@ class AIContentGenerator:
         try:
             # Generate content with Claude
             response = self.client.messages.create(
-                model="claude-3-sonnet-20240229",
+                model="claude-3-5-sonnet-20250114",
                 max_tokens=1200,
                 temperature=0.7,
                 messages=[{"role": "user", "content": prompt}]
@@ -769,6 +832,7 @@ Generate content that feels authentic, provides genuine value, and naturally lea
         base_hashtags = ["#MortgageRates", "#HomeLoans", "#MortgageExpert"]
         
         audience_hashtags = {
+            "gen_z": ["#FirstHome", "#StopRenting", "#FinancialFreedom", "#GenZHomebuyer"],
             "millennials": ["#FirstTimeBuyer", "#Homeownership", "#RealEstate"],
             "gen_x": ["#Refinancing", "#HomeEquity", "#SmartMoney"],
             "baby_boomers": ["#RefinanceOptions", "#RetirementPlanning", "#MortgageProfessional"]
@@ -786,6 +850,7 @@ Generate content that feels authentic, provides genuine value, and naturally lea
         current_rate = rate_data.get('current_rate', 7.0)
         
         templates = {
+            "gen_z": f"Mortgage rates at {current_rate}% right now! Tired of paying rent with no equity? Let's chat about getting you into your first home 🏠",
             "millennials": f"Current 30-year mortgage rates: {current_rate}%. Ready to explore homeownership? Let's discuss your options and find the right path forward.",
             "gen_x": f"Mortgage rates at {current_rate}% this week. Great time to review your current loan and explore refinancing opportunities.",
             "baby_boomers": f"30-year fixed rates: {current_rate}%. I'm here to provide expert guidance on all your mortgage needs."
@@ -968,7 +1033,7 @@ def cli(ctx):
 @cli.command()
 @click.option('--platform', '-p', type=click.Choice(['facebook', 'instagram', 'linkedin']), 
               required=True, help='Target platform')
-@click.option('--audience', '-a', type=click.Choice(['millennials', 'gen_x', 'baby_boomers']),
+@click.option('--audience', '-a', type=click.Choice(['gen_z', 'millennials', 'gen_x', 'baby_boomers']),
               required=True, help='Target audience')
 @click.option('--type', '-t', type=click.Choice(['educational', 'market_update', 'promotional']),
               default='market_update', help='Content type')
@@ -1011,7 +1076,7 @@ def generate(ctx, platform, audience, type, loan_officer, company, focus, api_ke
 @cli.command()
 @click.option('--platform', '-p', type=click.Choice(['facebook', 'instagram', 'linkedin']),
               required=True, help='Target platform')
-@click.option('--audience', '-a', type=click.Choice(['millennials', 'gen_x', 'baby_boomers']),
+@click.option('--audience', '-a', type=click.Choice(['gen_z', 'millennials', 'gen_x', 'baby_boomers']),
               required=True, help='Target audience')
 @click.option('--count', '-n', default=3, help='Number of variations')
 @click.option('--loan-officer', help='Loan officer name')
@@ -1091,7 +1156,7 @@ def audiences(ctx):
     
     click.echo("COMPREHENSIVE AUDIENCE TARGETING GUIDE\n")
     
-    for audience_key in ["millennials", "gen_x", "baby_boomers"]:
+    for audience_key in ["gen_z", "millennials", "gen_x", "baby_boomers"]:
         profile = targeting.get_profile(audience_key)
         
         click.echo(f"{'='*60}")
@@ -1205,7 +1270,7 @@ def platform_info(platform):
     for spec, value in data["specs"].items():
         click.echo(f"  • {spec.replace('_', ' ').title()}: {value}")
     
-    click.echo(f"\n✅ BEST PRACTICES:")
+    click.echo(f"\nBEST PRACTICES:")
     for practice in data["best_practices"]:
         click.echo(f"  • {practice}")
     
